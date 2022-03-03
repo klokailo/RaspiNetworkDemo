@@ -1,0 +1,27 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+out/
+META-INF/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# Maven
+log/
+target/
+
+# Gradle
+.gradle/
+gradle/
+build/
+gradlew
+gradlew.bat
+
+
+# Project Dependencies
+lib/
