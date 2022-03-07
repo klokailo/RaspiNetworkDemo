@@ -1,17 +1,9 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
-import me.kai.networkdemo.recipient.RecipientAddress
-import java.io.DataInputStream
-import java.net.InetAddress
-import java.nio.ByteBuffer
+import me.kai.networkdemo.packet.EncodedPacket
 
-class ClientClosedInboundPacket(val recipient: RecipientAddress): InboundPacket {
-
-    constructor(input: DataInputStream): this(RecipientAddress(
-        InetAddress.getByAddress(byteArrayOf(input.readByte(), input.readByte(), input.readByte(), input.readByte())),
-        ByteBuffer.wrap(byteArrayOf(input.readByte(), input.readByte())).short
-    ))
+class ClientClosedInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
     override val id: Byte = 0
 
@@ -19,8 +11,8 @@ class ClientClosedInboundPacket(val recipient: RecipientAddress): InboundPacket 
 
     override fun act() {
         for (target in Client.instance.recipients) {
-            if (target == recipient) {
-                Client.instance.recipients.remove(recipient)
+            if (target == sender) {
+                Client.instance.recipients.remove(sender)
                 succeeded = true
                 return
             }
@@ -29,9 +21,9 @@ class ClientClosedInboundPacket(val recipient: RecipientAddress): InboundPacket 
 
     override fun print() {
         if (succeeded) {
-            println("[Inbound] Recipient closed $recipient")
+            println("[Inbound] Recipient closed $sender")
         } else {
-            println("[Inbound] [WARNING] Received recipient closed for invalid recipient $recipient")
+            println("[Inbound] [WARNING] Received recipient closed for invalid recipient $sender")
         }
     }
 

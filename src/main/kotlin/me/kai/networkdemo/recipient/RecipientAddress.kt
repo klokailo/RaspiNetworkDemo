@@ -24,6 +24,11 @@ class RecipientAddress private constructor(val ipName: String, val signedPort: I
         unsignedPort
     )
 
+    constructor(byteArray: ByteArray): this(
+        InetAddress.getByAddress(byteArray.copyOfRange(0, 4)),
+        ByteBuffer.wrap(byteArray.copyOfRange(4, 6)).short
+    )
+
     override fun equals(other: Any?): Boolean {
         if (other !is RecipientAddress) return false
         return other.ip == ip && other.unsignedPort == unsignedPort

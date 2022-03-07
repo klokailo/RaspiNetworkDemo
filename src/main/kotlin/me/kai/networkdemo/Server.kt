@@ -1,10 +1,13 @@
 package me.kai.networkdemo
 
+import me.kai.networkdemo.packet.EncodedPacket
 import me.kai.networkdemo.packet.inbound.ClientClosedInboundPacket
 import me.kai.networkdemo.packet.inbound.InboundPacket
 import me.kai.networkdemo.packet.inbound.NetworkInviteInboundPacket
 import me.kai.networkdemo.packet.inbound.MessageInboundPacket
 import me.kai.networkdemo.packet.inbound.NewClientInboundPacket
+import me.kai.networkdemo.packet.inbound.ResponseInboundPacket
+import me.kai.networkdemo.recipient.RecipientAddress
 import java.io.BufferedInputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -18,6 +21,7 @@ class Server(val port: Int) {
         const val NEW_CLIENT_INBOUND_ID: Byte = 1
         const val MESSAGE_INBOUND_ID: Byte = 2
         const val NETWORK_INVITE_INBOUND_ID: Byte = 3
+        const val RESPONSE_INBOUND_ID: Byte = 4
     }
 
     var serverSocket: ServerSocket? = null
@@ -35,19 +39,23 @@ class Server(val port: Int) {
                 clientSocket = serverSocket!!.accept()
                 outStream = DataOutputStream(clientSocket!!.getOutputStream())
                 inStream = DataInputStream(BufferedInputStream(clientSocket!!.getInputStream()))
-                val packetId = inStream!!.readByte()
-                val inboundPacket: InboundPacket = when (packetId) {
-                    CLIENT_CLOSED_INBOUND_ID -> ClientClosedInboundPacket(inStream!!)
-                    NEW_CLIENT_INBOUND_ID -> NewClientInboundPacket(inStream!!)
-                    MESSAGE_INBOUND_ID -> MessageInboundPacket(inStream!!)
-                    NETWORK_INVITE_INBOUND_ID -> NetworkInviteInboundPacket(inStream!!)
-                    else -> continue
+                val awaitedPacket = awaitPacket(inStream!!)
+                val inboundPacket: InboundPacket = when (awaitedPacket.header.packetId) {
+                    CLIENT_CLOSED_INBOUND_ID -> ClientClosedInboundPacket(awaitedPacket)
+                    NEW_CLIENT_INBOUND_ID -> NewClientInboundPacket(awaitedPacket)
+                    MESSAGE_INBOUND_ID -> MessageInboundPacket(awaitedPacket)
+                    NETWORK_INVITE_INBOUND_ID -> NetworkInviteInboundPacket(awaitedPacket)
+                    RESPONSE_INBOUND_ID -> ResponseInboundPacket(awaitedPacket)
+                    else -> {
+                        println("[Inbound] WARNING: received packet with unknown id ${awaitedPacket.header.packetId}")
+                        continue
+                    }
                 }
                 inboundPacket.act()
                 if (Client.instance.printsEnabled) inboundPacket.print()
-                clientSocket?.close()
-                outStream?.close()
                 inStream?.close()
+                outStream?.close()
+                clientSocket?.close()
             }
         }.start()
         println("[Server] Localhost server started on port $port")
@@ -60,5 +68,10 @@ class Server(val port: Int) {
         clientSocket?.close()
         serverSocket?.close()
     }
+
+    private fun awaitPacket(input: DataInputStream) =
+        EncodedPacket(input.readByte(),
+            RecipientAddress(ByteArray(6).also { input.readFully(it) }), // Sender
+            ByteArray(input.readByte().toInt()).also { input.readFully(it) }) // Length + data
 
 }

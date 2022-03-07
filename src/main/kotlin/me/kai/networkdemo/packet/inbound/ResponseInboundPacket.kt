@@ -1,10 +1,10 @@
 package me.kai.networkdemo.packet.inbound
 
-import me.kai.networkdemo.packet.PacketResponse
+import me.kai.networkdemo.packet.EncodedPacket
 
-class ResponseInboundPacket(val response: PacketResponse): InboundPacket {
+class ResponseInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
-    override val id: Byte = 3
+    override val id: Byte = 4
 
     override fun act() {}
 

@@ -1,26 +1,21 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
+import me.kai.networkdemo.packet.EncodedPacket
 import me.kai.networkdemo.packet.outbound.IntroduceClientOutboundPacket
-import me.kai.networkdemo.packet.outbound.NewClientOutboundPacket
 import me.kai.networkdemo.recipient.RecipientAddress
-import java.io.DataInputStream
-import java.net.InetAddress
-import java.nio.ByteBuffer
 
-class NetworkInviteInboundPacket(val recipients: Set<RecipientAddress>): InboundPacket {
+class NetworkInviteInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
-    constructor(input: DataInputStream): this(Unit.run {
-        val size = input.readByte().toInt()
-        val recipients = HashSet<RecipientAddress>()
-        for (i in 0 until size) {
-            val ip = InetAddress.getByAddress(byteArrayOf(input.readByte(), input.readByte(), input.readByte(), input.readByte()))
-            val unsignedPort = ByteBuffer.wrap(byteArrayOf(input.readByte(), input.readByte())).short
-            val address = RecipientAddress(ip, unsignedPort)
-            recipients.add(address)
+    val recipients = HashSet<RecipientAddress>()
+
+    init {
+        if (encoded.body.size % 6 != 0) throw IllegalArgumentException("Cannot parse NetworkInviteInboundPacket from list of recipients with size ${encoded.body.size}!")
+        for (i in 0 until encoded.body.size / 6) {
+            val byteLocation = i * 6
+            recipients.add(RecipientAddress(encoded.body.copyOfRange(byteLocation, byteLocation + 6)))
         }
-        recipients
-    })
+    }
 
     override val id: Byte = 3
 
@@ -38,9 +33,9 @@ class NetworkInviteInboundPacket(val recipients: Set<RecipientAddress>): Inbound
     }
 
     override fun print() {
-        println("[Inbound] Received invite to new network packet")
+        println("[Inbound] Received invite to new network packet from $sender")
         for (recipient in recipients) {
-            println("[Inbound] New recipient on network: $recipient")
+            println("[Inbound] Received from $sender address of new recipient on network: $recipient")
         }
     }
 

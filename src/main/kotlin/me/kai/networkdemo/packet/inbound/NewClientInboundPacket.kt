@@ -1,26 +1,23 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
+import me.kai.networkdemo.packet.EncodedPacket
 import me.kai.networkdemo.recipient.RecipientAddress
-import java.io.DataInputStream
-import java.net.InetAddress
-import java.nio.ByteBuffer
 
-class NewClientInboundPacket(val recipientAddress: RecipientAddress): InboundPacket {
+class NewClientInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
     override val id: Byte = 1
 
-    constructor(input: DataInputStream): this(Unit.run {
-        RecipientAddress(
-            InetAddress.getByAddress(byteArrayOf(input.readByte(), input.readByte(), input.readByte(), input.readByte())),
-            ByteBuffer.wrap(byteArrayOf(input.readByte(), input.readByte())).short
-        )
-    })
+    init {
+        if (encoded.body.size != 6) throw IllegalArgumentException("Cannot parse NewClientInboundPacket from packet with body size ${encoded.body.size}, should be 6.")
+    }
+
+    val recipientAddress = RecipientAddress(encoded.body)
 
     override fun act() {
         Client.instance.recipients.add(recipientAddress)
     }
 
-    override fun print() = println("[Inbound] Established new recipient $recipientAddress")
+    override fun print() = println("[Inbound] Received from $sender address of established new recipient $recipientAddress")
 
 }

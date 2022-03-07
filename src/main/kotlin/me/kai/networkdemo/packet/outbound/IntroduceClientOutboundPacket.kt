@@ -6,7 +6,7 @@ class IntroduceClientOutboundPacket(val newClient: RecipientAddress, override va
 
     override val id: Byte = 1
 
-    override fun encode() = newClient.encoded
+    override val body = newClient.encoded
 
     override fun print() = println("[Outbound] Introducing new client $newClient to $recipient")
 }

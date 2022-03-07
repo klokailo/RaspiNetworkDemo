@@ -1,9 +1,12 @@
 package me.kai.networkdemo.packet.inbound
 
+import me.kai.networkdemo.packet.EncodedPacket
 import me.kai.networkdemo.packet.Packet
 
-interface InboundPacket: Packet {
+abstract class InboundPacket(encoded: EncodedPacket): Packet {
 
-    fun act()
+    val sender = encoded.header.sender
+
+    abstract fun act()
 
 }

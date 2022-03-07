@@ -13,8 +13,7 @@ class SingleRecipientConnection(override val recipientAddress: RecipientAddress)
     private val inStream = DataInputStream(BufferedInputStream(recipientSocket.getInputStream()))
 
     override fun sendPacket(packet: OutboundPacket) {
-        val message = packet.encode()
-        outStream.write(byteArrayOf(packet.id, *message))
+        outStream.write(packet.header + packet.body)
     }
 
     override fun close() {
