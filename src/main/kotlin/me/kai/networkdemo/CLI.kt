@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
     }
     if (addresses.isEmpty()) {
         println("Error: no IPV4 addresses detected (connected to LAN?)")
-        exitProcess(129)
+        exitProcess(0)
     }
     val address = if (addresses.size > 1) {
         println("IPV4 addresses identified: ")
@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
         val selectedAddress = input.nextInt()
         if (selectedAddress <= 0 || selectedAddress > addresses.size) {
             println("Error: invalid selected address")
-            exitProcess(129)
+            exitProcess(0)
         }
         println("Using ${addresses[selectedAddress - 1]}")
         addresses[selectedAddress - 1]
@@ -56,9 +56,7 @@ fun main(args: Array<String>) {
         } else if (line!!.startsWith("connect")) {
             try {
                 val split = line!!.split(" ")
-                val ip =
-                    if (split[1].equals("localhost", ignoreCase = true)) "127.0.0.1"
-                    else split[1]
+                val ip = split[1]
                 val recipientPort = Integer.parseInt(split[2])
                 try {
                     Client.instance.inviteNewClient(ip, recipientPort)
@@ -80,9 +78,7 @@ fun main(args: Array<String>) {
         } else if (line!!.startsWith("whisper", ignoreCase = true)) {
             try {
                 val split = line!!.split(" ")
-                val ip =
-                    if (split[1].equals("localhost", ignoreCase = true)) "127.0.0.1"
-                    else split[1]
+                val ip = split[1]
                 val recipientPort = Integer.parseInt(split[2])
                 val messageBuilder = StringBuilder()
                 for (i in 3 until split.size) messageBuilder.append(split[i])
@@ -112,5 +108,5 @@ fun main(args: Array<String>) {
             println("  - whisper <ip> <port> <message>: Whisper a message to a recipient")
         }
     }
-    exitProcess(129)
+    exitProcess(0)
 }

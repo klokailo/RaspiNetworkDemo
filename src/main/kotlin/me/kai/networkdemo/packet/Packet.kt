@@ -2,7 +2,7 @@ package me.kai.networkdemo.packet
 
 interface Packet {
 
-    val id: Byte
+    val type: Byte
 
     fun print()
 

@@ -17,11 +17,11 @@ import java.net.Socket
 class Server(val port: Int) {
 
     companion object {
-        const val CLIENT_CLOSED_INBOUND_ID: Byte = 0
-        const val NEW_CLIENT_INBOUND_ID: Byte = 1
-        const val MESSAGE_INBOUND_ID: Byte = 2
-        const val NETWORK_INVITE_INBOUND_ID: Byte = 3
-        const val RESPONSE_INBOUND_ID: Byte = 4
+        const val CLIENT_CLOSED_INBOUND_TYPE: Byte = 0
+        const val NEW_CLIENT_INBOUND_TYPE: Byte = 1
+        const val MESSAGE_INBOUND_TYPE: Byte = 2
+        const val NETWORK_INVITE_INBOUND_TYPE: Byte = 3
+        const val RESPONSE_INBOUND_TYPE: Byte = 4
     }
 
     var serverSocket: ServerSocket? = null
@@ -41,11 +41,11 @@ class Server(val port: Int) {
                 inStream = DataInputStream(BufferedInputStream(clientSocket!!.getInputStream()))
                 val awaitedPacket = awaitPacket(inStream!!)
                 val inboundPacket: InboundPacket = when (awaitedPacket.header.packetId) {
-                    CLIENT_CLOSED_INBOUND_ID -> ClientClosedInboundPacket(awaitedPacket)
-                    NEW_CLIENT_INBOUND_ID -> NewClientInboundPacket(awaitedPacket)
-                    MESSAGE_INBOUND_ID -> MessageInboundPacket(awaitedPacket)
-                    NETWORK_INVITE_INBOUND_ID -> NetworkInviteInboundPacket(awaitedPacket)
-                    RESPONSE_INBOUND_ID -> ResponseInboundPacket(awaitedPacket)
+                    CLIENT_CLOSED_INBOUND_TYPE -> ClientClosedInboundPacket(awaitedPacket)
+                    NEW_CLIENT_INBOUND_TYPE -> NewClientInboundPacket(awaitedPacket)
+                    MESSAGE_INBOUND_TYPE -> MessageInboundPacket(awaitedPacket)
+                    NETWORK_INVITE_INBOUND_TYPE -> NetworkInviteInboundPacket(awaitedPacket)
+                    RESPONSE_INBOUND_TYPE -> ResponseInboundPacket(awaitedPacket)
                     else -> {
                         println("[Inbound] WARNING: received packet with unknown id ${awaitedPacket.header.packetId}")
                         continue

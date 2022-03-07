@@ -1,8 +1,9 @@
 package me.kai.networkdemo.packet.outbound
 
+// I am closing my connection and notifying the rest of the network
 class ClientClosedOutboundPacket: BroadcastOutboundPacket {
 
-    override val id: Byte = 0
+    override val type: Byte = 0
 
     override val body = byteArrayOf() // Uses the sender in the header
 

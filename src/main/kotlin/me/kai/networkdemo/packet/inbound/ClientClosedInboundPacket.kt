@@ -3,9 +3,10 @@ package me.kai.networkdemo.packet.inbound
 import me.kai.networkdemo.Client
 import me.kai.networkdemo.packet.EncodedPacket
 
+// The client $encoded.sender has just told me they are closing, I'll remove them from my recipients
 class ClientClosedInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
-    override val id: Byte = 0
+    override val type: Byte = 0
 
     private var succeeded = false
 

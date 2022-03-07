@@ -5,6 +5,10 @@ import me.kai.networkdemo.packet.EncodedPacket
 import me.kai.networkdemo.packet.outbound.IntroduceClientOutboundPacket
 import me.kai.networkdemo.recipient.RecipientAddress
 
+// The client $encoded.sender has invited me to join their network, and listed those who are already on it.
+// I will first notify all of the recipients already connected to me about all the other recipients I am discovering
+// I will also notify all of the new recipients I am discovering about the recipients that are already connected to me
+// Finally, I will add all of the new recipients to my list
 class NetworkInviteInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
     val recipients = HashSet<RecipientAddress>()
@@ -17,7 +21,7 @@ class NetworkInviteInboundPacket(encoded: EncodedPacket): InboundPacket(encoded)
         }
     }
 
-    override val id: Byte = 3
+    override val type: Byte = 3
 
     override fun act() {
         // For joining two connected networks together

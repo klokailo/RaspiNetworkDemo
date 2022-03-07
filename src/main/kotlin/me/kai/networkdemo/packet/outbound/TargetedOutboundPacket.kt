@@ -3,6 +3,7 @@ package me.kai.networkdemo.packet.outbound
 import me.kai.networkdemo.Client
 import me.kai.networkdemo.recipient.RecipientAddress
 
+// I am sending a message targeted at one recipient
 interface TargetedOutboundPacket: OutboundPacket {
 
     val recipient: RecipientAddress

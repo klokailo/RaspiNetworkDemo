@@ -5,7 +5,7 @@ import me.kai.networkdemo.recipient.RecipientAddress
 data class EncodedPacket(val header: PacketHeader, val body: ByteArray) {
 
     init {
-        if (body.size > Byte.MAX_VALUE) throw IllegalArgumentException("Cannot form EncodedPacket with body size greated than max byte value!")
+        if (body.size > Byte.MAX_VALUE) throw IllegalArgumentException("Cannot form EncodedPacket with body size greater than max byte value!")
     }
 
     constructor(id: Byte, sender: RecipientAddress, body: ByteArray): this(PacketHeader(id, sender, body.size.toByte()), body)
