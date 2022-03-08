@@ -58,6 +58,10 @@ fun main(args: Array<String>) {
                 val split = line!!.split(" ")
                 val ip = split[1]
                 val recipientPort = Integer.parseInt(split[2])
+                if (Client.instance.hasRecipient(ip, recipientPort)) {
+                    println("A connection with that client already exists!")
+                    continue
+                }
                 try {
                     Client.instance.inviteNewClient(ip, recipientPort)
                 } catch (exception: Exception) {

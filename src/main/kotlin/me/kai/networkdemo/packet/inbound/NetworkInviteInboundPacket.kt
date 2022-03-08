@@ -15,10 +15,7 @@ class NetworkInviteInboundPacket(encoded: EncodedPacket): InboundPacket(encoded)
 
     init {
         if (encoded.body.size % 6 != 0) throw IllegalArgumentException("Cannot parse NetworkInviteInboundPacket from list of recipients with size ${encoded.body.size}!")
-        for (i in 0 until encoded.body.size / 6) {
-            val byteLocation = i * 6
-            recipients.add(RecipientAddress(encoded.body.copyOfRange(byteLocation, byteLocation + 6)))
-        }
+        for (i in 0 until encoded.body.size step 6) recipients.add(RecipientAddress(encoded.body.copyOfRange(i, i + 6)))
     }
 
     override val type: Byte = 3
@@ -39,7 +36,7 @@ class NetworkInviteInboundPacket(encoded: EncodedPacket): InboundPacket(encoded)
     override fun print() {
         println("[Inbound] Received invite to new network packet from $sender")
         for (recipient in recipients) {
-            println("[Inbound] Received from $sender address of new recipient on network: $recipient")
+            if (recipient != sender) println("[Inbound] Received from $sender address of new recipient on network: $recipient")
         }
     }
 

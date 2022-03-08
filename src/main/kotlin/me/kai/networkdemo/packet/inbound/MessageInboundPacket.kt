@@ -11,6 +11,6 @@ class MessageInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
 
     override fun act() {}
 
-    override fun print() = println("[Inbound] Message received from $sender: $message")
+    override fun print() = println("[Inbound] Received from $sender message: $message")
 
 }

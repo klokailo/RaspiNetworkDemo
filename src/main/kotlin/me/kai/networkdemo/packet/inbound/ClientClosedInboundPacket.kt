@@ -22,7 +22,7 @@ class ClientClosedInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) 
 
     override fun print() {
         if (succeeded) {
-            println("[Inbound] Recipient closed $sender")
+            println("[Inbound] Received recipient closed packet: $sender")
         } else {
             println("[Inbound] [WARNING] Received recipient closed for invalid recipient $sender")
         }

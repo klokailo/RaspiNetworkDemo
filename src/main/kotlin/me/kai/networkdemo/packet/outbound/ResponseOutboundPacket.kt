@@ -13,6 +13,6 @@ class ResponseOutboundPacket(override val recipient: RecipientAddress, val respo
         it[1] = response.responseType.id
     }
 
-    override fun print() = println("[Outbound] Sending \"${response.responseType.message}\" to $recipient in response to ${response.packetSentName}")
+    override fun print() = println("[Outbound] Sent \"${response.responseType.message}\" to $recipient in response to ${response.packetSentName}")
 
 }

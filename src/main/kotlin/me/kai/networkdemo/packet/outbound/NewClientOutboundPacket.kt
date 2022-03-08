@@ -9,6 +9,6 @@ class NewClientOutboundPacket(val newClient: RecipientAddress): BroadcastOutboun
 
     override val body = newClient.encoded
 
-    override fun print() = println("[Outbound] Introducing new client $newClient to network")
+    override fun print() = println("[Outbound] Introduced new client $newClient to network")
 
 }

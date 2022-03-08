@@ -34,11 +34,16 @@ class Client private constructor(val clientAddress: RecipientAddress, val prints
         })
     }
 
-    fun inviteNewClient(ipName: String, unsignedPort: Int) {
-        val address = RecipientAddress(ipName, unsignedPort)
+    fun inviteNewClient(ipName: String, port: Int) {
+        val address = RecipientAddress(ipName, port)
         NewClientOutboundPacket(address).sendAndPrint()
         recipients.add(address)
         NetworkInviteOutboundPacket(address).sendAndPrint()
+    }
+
+    fun hasRecipient(ipName: String, port: Int): Boolean {
+        for (recipient in recipients) if (recipient.equals(ipName, port)) return true
+        return false
     }
 
     fun createConnection(recipient: RecipientAddress, handler: (RecipientConnection) -> Unit) {
