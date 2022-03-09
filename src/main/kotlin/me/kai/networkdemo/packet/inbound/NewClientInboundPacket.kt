@@ -1,19 +1,20 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
-import me.kai.networkdemo.packet.EncodedPacket
+import me.kai.networkdemo.packet.InboundPacketContents
+import me.kai.networkdemo.packet.PacketType
 import me.kai.networkdemo.recipient.RecipientAddress
 
 // The client $encoded.sender has just notified me about a new client $recipientAddress on the network, I'll add it to my list
-class NewClientInboundPacket(encoded: EncodedPacket): InboundPacket(encoded) {
+class NewClientInboundPacket(contents: InboundPacketContents): InboundPacket(contents) {
 
-    override val type: Byte = 1
+    override val type = PacketType.NEW_CLIENT
 
     init {
-        if (encoded.body.size != 6) throw IllegalArgumentException("Cannot parse NewClientInboundPacket from packet with body size ${encoded.body.size}, should be 6.")
+        if (contents.body.size != 6) throw IllegalArgumentException("Cannot parse NewClientInboundPacket from packet with body size ${contents.body.size}, should be 6.")
     }
 
-    val recipientAddress = RecipientAddress(encoded.body)
+    val recipientAddress = RecipientAddress(contents.body)
 
     override fun act() {
         Client.instance.recipients.add(recipientAddress)

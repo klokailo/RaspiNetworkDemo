@@ -1,6 +1,7 @@
 package me.kai.networkdemo.packet.outbound
 
 import me.kai.networkdemo.Client
+import me.kai.networkdemo.packet.PacketType
 import me.kai.networkdemo.recipient.RecipientAddress
 
 // Hello $recipient, welcome to the network. The existing recipients already on the network are $existingRecipients
@@ -13,7 +14,7 @@ class NetworkInviteOutboundPacket(override val recipient: RecipientAddress, val 
         remove(recipient)
     })
 
-    override val type: Byte = 3
+    override val type = PacketType.NETWORK_INVITE
 
     override val body = run {
         val bytes = ByteArray(6 * existingRecipients.size)
