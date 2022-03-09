@@ -1,12 +1,12 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
-import me.kai.networkdemo.packet.InboundPacketContents
+import me.kai.networkdemo.packet.PacketContents
 import me.kai.networkdemo.packet.PacketType
 import me.kai.networkdemo.recipient.RecipientAddress
 
 // The client $encoded.sender has just notified me about a new client $recipientAddress on the network, I'll add it to my list
-class NewClientInboundPacket(contents: InboundPacketContents): InboundPacket(contents) {
+class NewClientInboundPacket(contents: PacketContents): InboundPacket(contents) {
 
     override val type = PacketType.NEW_CLIENT
 

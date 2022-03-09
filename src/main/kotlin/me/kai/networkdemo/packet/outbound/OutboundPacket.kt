@@ -6,7 +6,6 @@ import me.kai.networkdemo.packet.PacketHeader
 
 interface OutboundPacket: Packet {
 
-    val header get() = PacketHeader(type, Client.instance.clientAddress, body.size.toByte()).encoded
     val body: ByteArray
 
     fun send()
@@ -16,5 +15,7 @@ interface OutboundPacket: Packet {
         send()
         print()
     }
+
+    fun encode() = PacketHeader(type, Client.instance.clientAddress, body.size.toByte()).encoded + body
 
 }

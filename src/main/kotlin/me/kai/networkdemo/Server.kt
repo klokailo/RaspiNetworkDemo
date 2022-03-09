@@ -1,13 +1,8 @@
 package me.kai.networkdemo
 
-import me.kai.networkdemo.packet.InboundPacketContents
+import me.kai.networkdemo.packet.PacketContents
 import me.kai.networkdemo.packet.PacketType
-import me.kai.networkdemo.packet.inbound.ClientClosedInboundPacket
 import me.kai.networkdemo.packet.inbound.InboundPacket
-import me.kai.networkdemo.packet.inbound.NetworkInviteInboundPacket
-import me.kai.networkdemo.packet.inbound.MessageInboundPacket
-import me.kai.networkdemo.packet.inbound.NewClientInboundPacket
-import me.kai.networkdemo.packet.inbound.ResponseInboundPacket
 import me.kai.networkdemo.recipient.RecipientAddress
 import java.io.BufferedInputStream
 import java.io.DataInputStream
@@ -58,7 +53,7 @@ class Server(val port: Int) {
     }
 
     private fun awaitPacket(input: DataInputStream) =
-        InboundPacketContents(
+        PacketContents(
             PacketType.fromId(input.readByte()),
             RecipientAddress(ByteArray(6).also { input.readFully(it) }), // Sender
             ByteArray(input.readByte().toInt()).also { input.readFully(it) }) // Length + data

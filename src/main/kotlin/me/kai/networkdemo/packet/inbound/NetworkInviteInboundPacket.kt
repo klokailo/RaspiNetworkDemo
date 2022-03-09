@@ -1,7 +1,7 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
-import me.kai.networkdemo.packet.InboundPacketContents
+import me.kai.networkdemo.packet.PacketContents
 import me.kai.networkdemo.packet.PacketType
 import me.kai.networkdemo.packet.outbound.IntroduceClientOutboundPacket
 import me.kai.networkdemo.recipient.RecipientAddress
@@ -10,7 +10,7 @@ import me.kai.networkdemo.recipient.RecipientAddress
 // I will first notify all of the recipients already connected to me about all the other recipients I am discovering
 // I will also notify all of the new recipients I am discovering about the recipients that are already connected to me
 // Finally, I will add all of the new recipients to my list
-class NetworkInviteInboundPacket(contents: InboundPacketContents): InboundPacket(contents) {
+class NetworkInviteInboundPacket(contents: PacketContents): InboundPacket(contents) {
 
     val recipients = HashSet<RecipientAddress>()
 

@@ -1,10 +1,10 @@
 package me.kai.networkdemo.packet.inbound
 
-import me.kai.networkdemo.packet.InboundPacketContents
+import me.kai.networkdemo.packet.PacketContents
 import me.kai.networkdemo.packet.PacketType
 
 // The client $encoded.sender has sent me a message. I don't know if this is an announcement or a whisper
-class MessageInboundPacket(contents: InboundPacketContents): InboundPacket(contents) {
+class MessageInboundPacket(contents: PacketContents): InboundPacket(contents) {
 
     val message = String(contents.body)
 

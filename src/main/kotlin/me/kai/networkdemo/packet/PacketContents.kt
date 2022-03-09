@@ -2,7 +2,7 @@ package me.kai.networkdemo.packet
 
 import me.kai.networkdemo.recipient.RecipientAddress
 
-data class InboundPacketContents(val header: PacketHeader, val body: ByteArray) {
+data class PacketContents(val header: PacketHeader, val body: ByteArray) {
 
     init {
         if (body.size > Byte.MAX_VALUE) throw IllegalArgumentException("Cannot form EncodedPacket with body size greated than max byte value!")
@@ -17,7 +17,7 @@ data class InboundPacketContents(val header: PacketHeader, val body: ByteArray) 
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as InboundPacketContents
+        other as PacketContents
 
         if (header != other.header) return false
         if (!body.contentEquals(other.body)) return false

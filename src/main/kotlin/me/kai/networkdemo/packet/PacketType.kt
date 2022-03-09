@@ -10,22 +10,22 @@ import me.kai.networkdemo.packet.inbound.ResponseInboundPacket
 enum class PacketType(val id: Byte, val label: String) {
 
     CLIENT_CLOSED(0, "CLIENT_CLOSED") { // Sender has closed
-        override fun produceInboundPacket(contents: InboundPacketContents) = ClientClosedInboundPacket(contents)
+        override fun produceInboundPacket(contents: PacketContents) = ClientClosedInboundPacket(contents)
     },
     NEW_CLIENT(1, "NEW_CLIENT") { // Sender is exposing new client to recipient
-        override fun produceInboundPacket(contents: InboundPacketContents) = NewClientInboundPacket(contents)
+        override fun produceInboundPacket(contents: PacketContents) = NewClientInboundPacket(contents)
     },
     MESSAGE(2, "MESSAGE") { // Sender is sending message
-        override fun produceInboundPacket(contents: InboundPacketContents) = MessageInboundPacket(contents)
+        override fun produceInboundPacket(contents: PacketContents) = MessageInboundPacket(contents)
     },
     NETWORK_INVITE(3, "NETWORK_INVITE") { // Sender is inviting recipient to a network
-        override fun produceInboundPacket(contents: InboundPacketContents) = NetworkInviteInboundPacket(contents)
+        override fun produceInboundPacket(contents: PacketContents) = NetworkInviteInboundPacket(contents)
     },
     RESPONSE(4, "RESPONSE") { // Sender is sending a response
-        override fun produceInboundPacket(contents: InboundPacketContents) = ResponseInboundPacket(contents)
+        override fun produceInboundPacket(contents: PacketContents) = ResponseInboundPacket(contents)
     };
 
-    abstract fun produceInboundPacket(contents: InboundPacketContents): InboundPacket
+    abstract fun produceInboundPacket(contents: PacketContents): InboundPacket
 
     companion object {
         fun fromId(id: Byte): PacketType {

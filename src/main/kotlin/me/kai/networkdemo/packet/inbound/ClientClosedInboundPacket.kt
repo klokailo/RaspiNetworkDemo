@@ -1,11 +1,11 @@
 package me.kai.networkdemo.packet.inbound
 
 import me.kai.networkdemo.Client
-import me.kai.networkdemo.packet.InboundPacketContents
+import me.kai.networkdemo.packet.PacketContents
 import me.kai.networkdemo.packet.PacketType
 
 // The client $encoded.sender has just told me they are closing, I'll remove them from my recipients
-class ClientClosedInboundPacket(contents: InboundPacketContents): InboundPacket(contents) {
+class ClientClosedInboundPacket(contents: PacketContents): InboundPacket(contents) {
 
     override val type = PacketType.CLIENT_CLOSED
 
