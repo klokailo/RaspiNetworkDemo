@@ -14,7 +14,6 @@ class Server(val port: Int) {
 
     var serverSocket: ServerSocket? = null
     var clientSocket: Socket? = null
-    var outStream: DataOutputStream? = null
     var inStream: DataInputStream? = null
 
     private var running: Boolean = false
@@ -25,7 +24,6 @@ class Server(val port: Int) {
             serverSocket = ServerSocket(port)
             while (running) {
                 clientSocket = serverSocket!!.accept()
-                outStream = DataOutputStream(clientSocket!!.getOutputStream())
                 inStream = DataInputStream(BufferedInputStream(clientSocket!!.getInputStream()))
                 try {
                     val awaitedPacket = awaitPacket(inStream!!)
@@ -36,7 +34,6 @@ class Server(val port: Int) {
                     exception.printStackTrace()
                 } finally {
                     inStream?.close()
-                    outStream?.close()
                     clientSocket?.close()
                 }
             }
@@ -47,7 +44,6 @@ class Server(val port: Int) {
     fun close() {
         running = false
         inStream?.close()
-        outStream?.close()
         clientSocket?.close()
         serverSocket?.close()
     }
