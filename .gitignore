@@ -2,8 +2,6 @@
 .idea/
 *.iml
 *.iws
-out/
-META-INF/
 
 # Eclipse
 .project
@@ -19,9 +17,10 @@ target/
 .gradle/
 gradle/
 build/
-gradlew
-gradlew.bat
-
+out/
 
 # Project Dependencies
 lib/
+
+# Misc
+META-INF/
